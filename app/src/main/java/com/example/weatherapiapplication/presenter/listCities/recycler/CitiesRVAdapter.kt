@@ -1,5 +1,6 @@
 package com.example.weatherapiapplication.presenter.listCities.recycler
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,8 @@ class CitiesRVAdapter(
                     holder.itemView.tag = list[position]
                 },
                 {
+                    holder.setWithoutWeather(list[position])
+                    holder.itemView.tag = list[position]
 
                 }
             )
@@ -83,6 +86,10 @@ class CitiesRVAdapter(
             cityName.text = city.nameRU.uppercase()
             cityTemp.text = weather.weatherMain.temp.toString()
 
+        }
+
+        override fun setWithoutWeather(city: CityModel) {
+            cityName.text = city.nameRU.uppercase()
         }
 
     }

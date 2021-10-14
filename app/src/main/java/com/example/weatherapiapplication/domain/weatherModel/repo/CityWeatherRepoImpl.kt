@@ -14,7 +14,7 @@ class CityWeatherRepoImpl
 
 
     override fun getWeatherCity(cityName: String): Observable<CityWeatherModel> =
-        data.getWeather("Moscow").toObservable()
+        data.getWeather(cityName).toObservable()
 
 
 
