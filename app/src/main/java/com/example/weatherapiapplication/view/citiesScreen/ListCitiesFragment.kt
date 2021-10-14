@@ -10,6 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.weatherapiapplication.databinding.ListCitiesFragmentBinding
 import com.example.weatherapiapplication.domain.city.CityModel
 import com.example.weatherapiapplication.domain.city.repo.ListCitiesRepo
+import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepo
 import com.example.weatherapiapplication.presenter.listCities.ListCitiesPresenter
 import com.example.weatherapiapplication.presenter.listCities.recycler.CitiesRVAdapter
 import com.example.weatherapiapplication.presenter.listCities.recycler.CityClickListener
@@ -25,6 +26,9 @@ class ListCitiesFragment
 
     @Inject
     lateinit var repo: ListCitiesRepo
+
+    @Inject
+    lateinit var repoWeather: CityWeatherRepo
 
     private val viewBinding: ListCitiesFragmentBinding by viewBinding()
 
@@ -47,7 +51,7 @@ class ListCitiesFragment
         viewBinding.also {
             it.rvCities.let { rv ->
                 rv.layoutManager = LinearLayoutManager(context)
-                adapter = CitiesRVAdapter(this)
+                adapter = CitiesRVAdapter(this, repoWeather, schedulers)
                 rv.adapter = adapter
             }
         }

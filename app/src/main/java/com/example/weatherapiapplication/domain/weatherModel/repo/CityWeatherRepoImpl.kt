@@ -14,18 +14,8 @@ class CityWeatherRepoImpl
 
 
     override fun getWeatherCity(cityName: String): Observable<CityWeatherModel> =
-        /*Observable.merge(
-            cache
-                .getWeather(cityName)
-                .toObservable(),
-            data
-                .getWeather(cityName)
-                .flatMap {
-                    cache.retain(cityName, weather = it)
-                }
-                .toObservable()
-                )*/
         data.getWeather("Moscow").toObservable()
+
 
 
 }
