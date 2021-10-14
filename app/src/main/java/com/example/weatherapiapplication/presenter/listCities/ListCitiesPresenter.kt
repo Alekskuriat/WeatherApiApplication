@@ -36,10 +36,6 @@ class ListCitiesPresenter
         )
     }
 
-    /*fun openCityWeather(city: CityModel) =
-        router
-            .navigateTo(CitiesScreen()
-                .repositories(user.reposUrl))*/
 
     fun backPressed(): Boolean {
         router.exit()

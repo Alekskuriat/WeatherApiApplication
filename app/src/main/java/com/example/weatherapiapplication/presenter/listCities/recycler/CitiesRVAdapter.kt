@@ -51,8 +51,6 @@ class CitiesRVAdapter(
     inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item),
         UserItemView {
 
-        private val disposable = CompositeDisposable()
-
         private var cityName: TextView = itemView.findViewById(R.id.city_name)
 
         override var pos = -1
