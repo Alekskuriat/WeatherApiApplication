@@ -8,8 +8,6 @@ interface ItemView {
 }
 
 interface UserItemView : ItemView {
-    fun set(city : CityModel, weather: CityWeatherModel)
-
-    fun setWithoutWeather(city : CityModel)
+    fun set(city : CityModel)
 
 }

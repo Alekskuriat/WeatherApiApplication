@@ -1,35 +1,28 @@
 package com.example.weatherapiapplication.presenter.listCities.recycler
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weatherapiapplication.R
 import com.example.weatherapiapplication.domain.city.CityModel
 import com.example.weatherapiapplication.domain.weatherModel.CityWeatherModel
-import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepo
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.*
-import javax.inject.Inject
+import java.text.DecimalFormat
 
 
 class CitiesRVAdapter(
     private val delegate: CityClickListener,
-    private val repo: CityWeatherRepo,
-    private val schedulers: com.example.popularlibraries.domain.schedulers.Schedulers
 ) : RecyclerView.Adapter<CitiesRVAdapter.ViewHolder>() {
 
     private val list: MutableList<CityModel> = mutableListOf()
+    private var map: MutableMap<CityModel, CityWeatherModel?> = mutableMapOf()
+    private val KELVIN = 273.15
 
-
-    fun submit(users: List<CityModel>) {
+    fun submit(users: List<CityModel>, map: MutableMap<CityModel, CityWeatherModel?>) {
         val callback = CityDiff(
             oldList = list,
             newList = users
@@ -37,7 +30,12 @@ class CitiesRVAdapter(
         val result = DiffUtil.calculateDiff(callback)
         list.clear()
         list.addAll(users)
+        this.map = map
         result.dispatchUpdatesTo(this)
+    }
+
+    fun updateItemWeather(position: Int, weather: CityWeatherModel) {
+        map[list[position]] = weather
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -55,21 +53,8 @@ class CitiesRVAdapter(
     override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        repo
-            .getWeatherCity(list[position].name)
-            .observeOn(schedulers.main())
-            .subscribeOn(schedulers.background())
-            .subscribe(
-                {
-                    holder.set(list[position], it)
-                    holder.itemView.tag = list[position]
-                },
-                {
-                    holder.setWithoutWeather(list[position])
-                    holder.itemView.tag = list[position]
-
-                }
-            )
+        holder.set(list[position])
+        holder.itemView.tag = list[position]
 
     }
 
@@ -79,18 +64,38 @@ class CitiesRVAdapter(
 
         private var cityName: TextView = itemView.findViewById(R.id.city_name)
         private var cityTemp: TextView = itemView.findViewById(R.id.city_temp)
+        private var cityWindSpeed: TextView = itemView.findViewById(R.id.city_wind_speed)
+        private var progressBar: ProgressBar = itemView.findViewById(R.id.weather_progress)
 
         override var pos = -1
 
-        override fun set(city: CityModel, weather: CityWeatherModel) {
+        @SuppressLint("SetTextI18n")
+        override fun set(city: CityModel) {
             cityName.text = city.nameRU.uppercase()
-            cityTemp.text = weather.weatherMain.temp.toString()
+            if (map[city] == null) {
+                progressBar.visibility = View.VISIBLE
+                cityTemp.visibility = View.GONE
+                cityWindSpeed.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+                cityTemp.text = "Температура: ${
+                    map[city]?.weatherMain?.temp?.let {
+                        kelvinToCelsius(
+                            it
+                        )
+                    }
+                } С"
+                cityWindSpeed.text = "Скорость ветра: ${map[city]?.wind?.windSpeed.toString()} м/с"
+                cityTemp.visibility = View.VISIBLE
+                cityWindSpeed.visibility = View.VISIBLE
+            }
+
 
         }
 
-        override fun setWithoutWeather(city: CityModel) {
-            cityName.text = city.nameRU.uppercase()
-        }
+        fun kelvinToCelsius(k: Double): String =
+            DecimalFormat("##.0").format(k - KELVIN).toString()
+
 
     }
 }

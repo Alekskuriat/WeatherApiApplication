@@ -17,5 +17,4 @@ class CityWeatherRepoImpl
         data.getWeather(cityName).toObservable()
 
 
-
 }

@@ -13,18 +13,7 @@ class ListCitiesRepoImpl
 ) : ListCitiesRepo {
 
     override fun getCities(): Observable<List<CityModel>> =
-        /*Observable.merge(
-            cache
-                .getCities()
-                .toObservable(),
-            data
-                .getCities()
-                .flatMap {
-                    cache.retain(it)
-                }
-                .toObservable()
-*/
-            data
-                .getCities()
-                .toObservable()
+        data
+            .getCities()
+            .toObservable()
 }

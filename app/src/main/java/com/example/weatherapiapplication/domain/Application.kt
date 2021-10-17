@@ -6,7 +6,7 @@ import com.github.terrakok.cicerone.Cicerone
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
-class Application  : DaggerApplication() {
+class Application : DaggerApplication() {
 
     override fun applicationInjector(): AndroidInjector<Application> =
         DaggerApplicationComponent

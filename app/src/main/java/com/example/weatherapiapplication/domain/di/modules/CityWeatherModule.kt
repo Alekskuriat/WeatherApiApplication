@@ -6,11 +6,17 @@ import com.example.weatherapiapplication.domain.weatherModel.data.CityWeatherDat
 import com.example.weatherapiapplication.domain.weatherModel.data.CityWeatherDataSourceImpl
 import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepo
 import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepoImpl
+import com.example.weatherapiapplication.view.citiesScreen.CitiesFragment
+import com.example.weatherapiapplication.view.listCities.ListCitiesFragment
 import dagger.Binds
 import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
 @Module
 interface CityWeatherModule {
+
+    @ContributesAndroidInjector
+    fun bindCitiesFragment(): CitiesFragment
 
     @Binds
     fun bindCityWeatherRepo(

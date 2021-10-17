@@ -1,4 +1,4 @@
-package com.example.weatherapiapplication.view.citiesScreen
+package com.example.weatherapiapplication.view.listCities
 
 import android.os.Bundle
 import android.view.View
@@ -8,8 +8,10 @@ import com.example.popularlibraries.domain.abs.AbsFragment
 import com.example.weatherapiapplication.R
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.weatherapiapplication.databinding.ListCitiesFragmentBinding
+import com.example.weatherapiapplication.domain.api.WeatherApi
 import com.example.weatherapiapplication.domain.city.CityModel
 import com.example.weatherapiapplication.domain.city.repo.ListCitiesRepo
+import com.example.weatherapiapplication.domain.weatherModel.CityWeatherModel
 import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepo
 import com.example.weatherapiapplication.presenter.listCities.ListCitiesPresenter
 import com.example.weatherapiapplication.presenter.listCities.recycler.CitiesRVAdapter
@@ -24,6 +26,10 @@ class ListCitiesFragment
     BackButtonListener,
     CityClickListener {
 
+
+    @Inject
+    lateinit var weatherApi: WeatherApi
+
     @Inject
     lateinit var repo: ListCitiesRepo
 
@@ -34,6 +40,7 @@ class ListCitiesFragment
 
     private val presenter: ListCitiesPresenter by moxyPresenter {
         ListCitiesPresenter(
+            weatherApi,
             repo,
             router,
             schedulers
@@ -51,24 +58,24 @@ class ListCitiesFragment
         viewBinding.also {
             it.rvCities.let { rv ->
                 rv.layoutManager = LinearLayoutManager(context)
-                adapter = CitiesRVAdapter(this, repoWeather, schedulers)
+                adapter = CitiesRVAdapter(this)
                 rv.adapter = adapter
             }
+
         }
 
     }
 
 
-
     override fun onClickCity(city: CityModel) {
-
+        presenter.openWeatherCity(city)
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()
 
-    override fun showCities(list: List<CityModel>) {
+    override fun showCities(list: List<CityModel>, map: MutableMap<CityModel, CityWeatherModel?>) {
         viewBinding.progress.visibility = View.GONE
-        adapter?.submit(list)
+        adapter?.submit(list, map)
             ?: Toast.makeText(context, getString(R.string.error), Toast.LENGTH_LONG).show()
     }
 
@@ -79,6 +86,11 @@ class ListCitiesFragment
 
     override fun showLoading() {
         viewBinding.progress.visibility = View.VISIBLE
+    }
+
+    override fun showWeatherCity(weather: CityWeatherModel, position: Int) {
+        adapter?.updateItemWeather(position, weather)
+        adapter?.notifyItemChanged(position)
     }
 
 
