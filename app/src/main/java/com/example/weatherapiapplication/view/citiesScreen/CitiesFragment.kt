@@ -1,5 +1,6 @@
 package com.example.weatherapiapplication.view.citiesScreen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.example.weatherapiapplication.databinding.CitiesWeatherFragmentBindin
 import com.example.weatherapiapplication.domain.api.WeatherApi
 import com.example.weatherapiapplication.domain.city.CityModel
 import com.example.weatherapiapplication.domain.weatherModel.CityWeatherModel
+import com.example.weatherapiapplication.domain.weatherModel.WindDeg
 import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepo
 import com.example.weatherapiapplication.presenter.citiesScreen.CitiesWeatherPresenter
 import com.example.weatherapiapplication.presenter.citiesScreen.CitiesWeatherPresenterFactory
@@ -63,12 +65,34 @@ class CitiesFragment :
 
     override fun backPressed(): Boolean = presenter.backPressed()
 
+    @SuppressLint("SetTextI18n")
     override fun showWeather(weather: CityWeatherModel) {
         viewBinding.progress.visibility = View.GONE
         viewBinding.apply {
-            cityTemp.text =
-                DecimalFormat("##.0").format(weather.weatherMain.temp - KELVIN).toString()
             cityName.text = city.nameRU
+
+            cityTemp.text =
+                "Температура: ${DecimalFormat("##.0").format(weather.weatherMain.temp - KELVIN)} C"
+            cityTempMax.text =
+                "Температура max: ${DecimalFormat("##.0").format(weather.weatherMain.tempMax - KELVIN)} C"
+            cityTempMin.text =
+                "Температура min: ${DecimalFormat("##.0").format(weather.weatherMain.tempMin - KELVIN)} C"
+            cityFeelsLike.text =
+                "Ощущается: ${DecimalFormat("##.0").format(weather.weatherMain.feelLike - KELVIN)} C"
+
+            cityCloudPercent.text =
+                "Облачность: ${weather.clouds.cloudPercent}"
+            cityHumidity.text =
+                "Влажность: ${weather.weatherMain.humidity}%"
+
+            cityPressure.text =
+                "Давление: ${weather.weatherMain.pressure} мПа"
+
+            cityWindSpeed.text =
+                "Скорость ветра: ${weather.wind.windSpeed} м/с"
+            cityWindDeg.text =
+                "Направление ветра: ${determineDirectionWind(weather.wind.windDeg).dir}"
+
         }
     }
 
@@ -81,11 +105,29 @@ class CitiesFragment :
         viewBinding.progress.visibility = View.VISIBLE
     }
 
+    private fun determineDirectionWind(deg: Int): WindDeg {
+        for (direction in WindDeg.values()) {
+            if (deg >= direction.deg) return direction
+        }
+        return WindDeg.N
+    }
 
 }
 
-private fun CitiesFragment.arguments(array: Array<String>): Fragment {
-    this.arguments = bundleOf()
-    return this
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

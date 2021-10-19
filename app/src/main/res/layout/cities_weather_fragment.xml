@@ -6,30 +6,119 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/city_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="23" />
-
-    <TextView
         android:id="@+id/city_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:padding="40dp"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Москва" />
+
+    <TextView
+        android:id="@+id/city_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/city_name"
+        app:layout_constraintTop_toTopOf="@id/city_name"
+        tools:text="Температура: 23 С" />
+
+    <TextView
+        android:id="@+id/city_feels_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/city_temp"
+        app:layout_constraintTop_toBottomOf="@id/city_temp"
+        tools:text="Ощущается: 23 С" />
+
+    <TextView
+        android:id="@+id/city_pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/city_feels_like"
+        app:layout_constraintTop_toBottomOf="@id/city_feels_like"
+        tools:text="Давление: 23 " />
+
+    <TextView
+        android:id="@+id/city_temp_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/city_humidity"
+        app:layout_constraintTop_toTopOf="@id/city_humidity"
+        tools:text="Температура max: 23 C" />
+
+    <TextView
+        android:id="@+id/city_temp_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/city_temp_max"
+        app:layout_constraintTop_toBottomOf="@id/city_temp_max"
+        tools:text="Температура min: 23 C "
+        />
+
+    <TextView
+        android:id="@+id/city_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="23" />
+        app:layout_constraintTop_toBottomOf="@id/city_name"
+        tools:text="Влажность: 23% " />
+
+
+    <TextView
+        android:id="@+id/city_cloud_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/city_humidity"
+        tools:text="Облачность: 23% " />
+
+    <TextView
+        android:id="@+id/city_wind_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/city_humidity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/city_humidity"
+        tools:text="Скорость ветра: 23 м/с " />
+
+    <TextView
+        android:id="@+id/city_wind_deg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/city_humidity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/city_wind_speed"
+        tools:text="Направление: ЮЗ " />
 
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
