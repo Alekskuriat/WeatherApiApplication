@@ -1,21 +1,21 @@
 package com.example.weatherapiapplication.domain.city.cache
 
 import com.example.weatherapiapplication.domain.city.CityModel
-import com.example.weatherapiapplication.domain.storage.WeatherStorage
+import com.example.weatherapiapplication.domain.storage.RoomStorage
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class CacheListCitiesDataSourceImpl
 @Inject constructor(
-    private val weatherStorage: WeatherStorage
+    private val weatherStorage: RoomStorage
 ) : CacheListCitiesDataSource {
 
 
-    override fun retain(listCities: List<CityModel>): Single<List<CityModel>> =
+    override fun saveListCities(listCities: List<CityModel>): Completable =
         weatherStorage
             .getCityDao()
-            .retain(listCities)
-            .andThen(getCities())
+            .addListCities(listCities)
 
 
     override fun getCities(): Single<List<CityModel>> =

@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.core.Observable
 
 interface CityWeatherRepo {
 
-    fun getWeatherCity(cityName: String) : Observable<CityWeatherModel>
+    fun getWeatherCity(cityName: String): Observable<CityWeatherModel>
 
 
 }

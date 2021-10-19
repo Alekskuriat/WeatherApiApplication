@@ -15,5 +15,4 @@ class CityWeatherDataSourceImpl
         weatherApi.getWeatherCity(cityName)
 
 
-
 }
