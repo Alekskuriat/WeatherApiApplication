@@ -5,6 +5,7 @@ import com.example.weatherapiapplication.domain.api.WeatherApi
 import com.example.weatherapiapplication.domain.city.CityModel
 import com.example.weatherapiapplication.domain.city.repo.ListCitiesRepo
 import com.example.weatherapiapplication.domain.weatherModel.CityWeatherModel
+import com.example.weatherapiapplication.domain.weatherModel.repo.CityWeatherRepo
 import com.example.weatherapiapplication.presenter.citiesScreen.CitiesWeatherScreen
 import com.example.weatherapiapplication.view.listCities.ListCitiesView
 import com.github.terrakok.cicerone.Router
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 class ListCitiesPresenter
 @Inject constructor(
-    private val weatherApi: WeatherApi,
+    private val repoWeather: CityWeatherRepo,
     private val repo: ListCitiesRepo,
     private val router: Router,
     private val schedulers: Schedulers
@@ -35,8 +36,8 @@ class ListCitiesPresenter
                 .subscribeOn(schedulers.background())
                 .subscribe(
                     {
-                        getWeatherCity(it)
                         viewState.showCities(it, map)
+                        getWeatherCity(it)
                     },
                     {
                         viewState.showError(it)
@@ -48,14 +49,19 @@ class ListCitiesPresenter
     private fun getWeatherCity(list: List<CityModel>) {
 
         for (i in list.indices) {
-            weatherApi
+            repoWeather
                 .getWeatherCity(list[i].name)
                 .observeOn(schedulers.main())
                 .subscribeOn(schedulers.background())
-                .subscribe { weather, _ ->
-                    viewState.showWeatherCity(weather, i)
-                    map[list[i]] = weather
-                }
+                .subscribe(
+                    {
+                        viewState.showWeatherCity(it, i)
+                        map[list[i]] = it
+                    },
+                    {
+                        viewState.showError(it)
+                    }
+                )
         }
     }
 

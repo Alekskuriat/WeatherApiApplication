@@ -13,6 +13,7 @@ import com.example.weatherapiapplication.view.listCities.ListCitiesFragment
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import javax.inject.Singleton
 
 @Module
 interface ListCitiesModule {
@@ -24,21 +25,25 @@ interface ListCitiesModule {
     fun bindListCitiesFragment(): ListCitiesFragment
 
     @Binds
+    @Singleton
     fun bindListCityRepo(
         listCitiesRepoImpl: ListCitiesRepoImpl
     ): ListCitiesRepo
 
     @Binds
+    @Singleton
     fun bindListCitiesDataSource(
         listCitiesDataSourceImpl: ListCitiesDataSourceImpl
     ): ListCitiesDataSource
 
     @Binds
+    @Singleton
     fun bindCacheListCitiesDataSource(
         cacheListCitiesDataSourceImpl: CacheListCitiesDataSourceImpl
     ): CacheListCitiesDataSource
 
     @Binds
+    @Singleton
     fun bindListCities(
         listCitiesMock: CitiesApiMock
     ): CitiesApi

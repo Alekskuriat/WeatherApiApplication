@@ -13,11 +13,12 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface CityWeatherDao {
 
-    @Query("SELECT * FROM city_weather")
-    fun getWeatherCity(): Single<CityWeatherModel>
+    @Query("SELECT * FROM ${CityWeatherEntity.TABLE_NAME} WHERE :cityName LIKE city")
+    fun getWeatherCity(cityName: String): Single<CityWeatherEntity>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun retain(weather: CityWeatherModel): Completable
+    fun addWeatherCity(weather: CityWeatherEntity): Completable
 }
 
 

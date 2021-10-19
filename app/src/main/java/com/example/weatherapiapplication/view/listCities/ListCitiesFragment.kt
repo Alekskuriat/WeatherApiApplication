@@ -27,8 +27,9 @@ class ListCitiesFragment
     CityClickListener {
 
 
+
     @Inject
-    lateinit var weatherApi: WeatherApi
+    lateinit var weatherRepo: CityWeatherRepo
 
     @Inject
     lateinit var repo: ListCitiesRepo
@@ -40,7 +41,7 @@ class ListCitiesFragment
 
     private val presenter: ListCitiesPresenter by moxyPresenter {
         ListCitiesPresenter(
-            weatherApi,
+            weatherRepo,
             repo,
             router,
             schedulers

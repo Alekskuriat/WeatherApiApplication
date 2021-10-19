@@ -17,6 +17,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -25,6 +26,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+        def apiKey  = properties.getProperty("weather_api_key", "")
+        it.buildConfigField "String", "WEATHER_API_KEY", apiKey
+    }
+
+
 
     buildFeatures  {
         viewBinding true
@@ -74,6 +84,7 @@ dependencies {
 
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation "androidx.room:room-rxjava3:2.3.0"
+    kapt 'androidx.room:room-compiler:2.3.0'
 
     implementation 'com.google.dagger:dagger:2.38.1'
     implementation 'com.google.dagger:dagger-android:2.38.1'
@@ -85,7 +96,7 @@ dependencies {
     implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.0-beta01'
 
 
-    kapt 'androidx.room:room-compiler:2.3.0'
+
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
